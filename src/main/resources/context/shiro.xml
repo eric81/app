@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro Security Configuration</description>
+	
+	<!-- Shiro Filter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/user/login" />
+		<property name="successUrl" value="/view/index.jsp" />
+		<property name="filterChainDefinitions">
+			<value>
+				/user/login = authc
+				/logout = logout
+				/user/register = anon
+				/static/** = anon
+				/admin/** = roles[admin]
+				/** = user
+			</value>
+		</property>
+	</bean>
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	
+	<!-- Shiro's main business-tier object for web-enabled applications -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroDbRealm" />
+		<property name="cacheManager" ref="ehcacheManager" />
+		<property name="sessionManager" ref="webSessionManager" />
+	</bean>
+	
+	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+	<bean id="shiroDbRealm" class="com.eudemon.taurus.app.service.ShiroDbRealm" />
+	
+	<bean id="webSessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<!-- session过期时间   跟sso保持一致，一个小时 -->
+		<property name="globalSessionTimeout" value="3600000"></property>
+		<!-- 此处使用自定义的sessiondao -->
+		<property name="sessionDAO" ref="redisSessionDAO" />
+		<property name="sessionIdCookie" ref="sessionCookie" />
+		
+		<!--禁用定时清理session功能-->
+		<property name="sessionValidationSchedulerEnabled" value="true"/>  
+	</bean>
+	
+	<bean id="ehcacheSessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"></bean>
+	<bean id="redisSessionDAO" class="com.eudemon.taurus.app.service.RedisSessionDao"></bean>
+	<bean id="databaseSessionDAO" class="com.eudemon.taurus.app.service.DataBaseSessionDao"></bean>
+	
+	<bean id="sessionCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+		<constructor-arg name="name" value="ESESSIONID" />
+	</bean>
+	
+	<!-- 用户授权信息Cache, 采用EhCache -->
+	<bean id="ehcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:ehcache/ehcache-shiro.xml" />
+	</bean>
+</beans>
