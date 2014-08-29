@@ -30,7 +30,6 @@ public class DataBaseSessionDao extends AbstractSessionDAO {
 
 	@Override
 	public Collection<Session> getActiveSessions() {
-		logger.trace("DataBaseSessionDao:getActiveSessions");
 		Collection<Session> ct = new ArrayList<Session>();
 		List<Esession> ls = dao.queryAll();
 		for(Esession es : ls){
