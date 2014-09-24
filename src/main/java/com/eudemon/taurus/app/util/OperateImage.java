@@ -139,10 +139,10 @@ public class OperateImage {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String name = "D:\\zuidaima\\image.jpg";
+		String name = "src/main/webapp/static/images/1.jpg";
 		OperateImage o = new OperateImage(60, 5, 80, 100);
 		o.setSrcpath(name);
-		o.setSubpath("F:\\zuidaima\\3.jpg");
+		o.setSubpath("src/main/webapp/static/images/2.jpg");
 		o.cut();
 	}
 }
