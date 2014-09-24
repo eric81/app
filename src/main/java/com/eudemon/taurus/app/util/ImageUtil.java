@@ -12,41 +12,28 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
 /**
- * 图片裁剪
+ * 图片工具类
  * 
- * @author www.zuidaima.com
+ * @author eric
  **/
-public class OperateImage {
-	// ===源图片路径名称如：c:\1.jpg
-	private String srcpath;
-	// ===剪切图片存放路径名称。如：c:\2.jpg
-	private String subpath;
-	// ===剪切点x坐标
-	private int x;
-	private int y;
-	// ===剪切点宽度
-	private int width;
-	private int height;
-
-	public OperateImage() {
-	}
-
-	public OperateImage(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-	}
+public class ImageUtil {
 
 	/**
-	 * 对图片裁剪，并把裁剪完的新图片保存 。
+	 * 对图片进行裁剪，并把裁剪后的新图片保存，剪裁后的图片为矩形，可以指定矩形的左上点坐标和长宽。
+	 * @param src 原始图片地址
+	 * @param dest 裁剪后保存地址
+	 * @param x 图片剪裁区域左上点x坐标
+	 * @param y 图片剪裁区域左上点x坐标
+	 * @param width 图片剪裁区域宽度
+	 * @param height 图片剪裁区域长度
+	 * @throws IOException
 	 */
-	public void cut() throws IOException {
+	public static void cut(String src, String dest, int x, int y, int width, int height) throws IOException {
 		FileInputStream is = null;
 		ImageInputStream iis = null;
 		try {
 			// 读取图片文件
-			is = new FileInputStream(srcpath);
+			is = new FileInputStream(src);
 			/**
 			 * 返回包含所有当前已注册 ImageReader 的 Iterator，这些 ImageReader 声称能够解码指定格式。
 			 * 参数：formatName - 包含非正式格式名称 . (例如 "jpeg" 或 "tiff")等 。
@@ -81,7 +68,7 @@ public class OperateImage {
 			 */
 			BufferedImage bi = reader.read(0, param);
 			// 保存新图片
-			ImageIO.write(bi, "jpg", new File(subpath));
+			ImageIO.write(bi, "jpg", new File(dest));
 		} finally {
 			if (is != null)
 				is.close();
@@ -90,59 +77,9 @@ public class OperateImage {
 		}
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public String getSrcpath() {
-		return srcpath;
-	}
-
-	public void setSrcpath(String srcpath) {
-		this.srcpath = srcpath;
-	}
-
-	public String getSubpath() {
-		return subpath;
-	}
-
-	public void setSubpath(String subpath) {
-		this.subpath = subpath;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
 	public static void main(String[] args) throws Exception {
-		String name = "src/main/webapp/static/images/1.jpg";
-		OperateImage o = new OperateImage(60, 5, 80, 100);
-		o.setSrcpath(name);
-		o.setSubpath("src/main/webapp/static/images/2.jpg");
-		o.cut();
+		String src = "src/main/webapp/static/images/1.jpg";
+		String dest = "src/main/webapp/static/images/2.jpg";
+		ImageUtil.cut(src, dest, 1600, 1000, 800, 600);
 	}
 }
