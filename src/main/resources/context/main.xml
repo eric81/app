@@ -26,14 +26,6 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-	<!-- Transaction manager for a single JDBC DataSource -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="defaultDataSource" />
-	</bean>
-
-	<!-- Annotation driven transaction settings -->
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 
 	<!-- message source -->
