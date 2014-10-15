@@ -34,7 +34,7 @@
 	</bean>
 	
 	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
-	<bean id="shiroDbRealm" class="com.eudemon.taurus.app.service.ShiroDbRealm" />
+	<bean id="shiroDbRealm" class="${app.basePackage}.service.ShiroDbRealm" />
 	
 	<bean id="webSessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
 		<!-- session过期时间   跟sso保持一致，一个小时 -->
@@ -48,8 +48,8 @@
 	</bean>
 	
 	<bean id="ehcacheSessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO"></bean>
-	<bean id="redisSessionDAO" class="com.eudemon.taurus.app.service.RedisSessionDao"></bean>
-	<bean id="databaseSessionDAO" class="com.eudemon.taurus.app.service.DataBaseSessionDao"></bean>
+	<bean id="redisSessionDAO" class="${app.basePackage}.service.RedisSessionDao"></bean>
+	<bean id="databaseSessionDAO" class="${app.basePackage}.service.DataBaseSessionDao"></bean>
 	
 	<bean id="sessionCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg name="name" value="ESESSIONID" />

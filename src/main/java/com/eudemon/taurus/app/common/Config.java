@@ -33,7 +33,7 @@ public class Config {
 	
 	public static void initFromDatabase() throws Exception {
 		DataSource ds = (DataSource) AppCtxServer.getInstance().getBean("w");
-		dbConfig = new DatabaseConfiguration(ds, "myconfig", "ckey", "cvalue");
+		dbConfig = new DatabaseConfiguration(ds, "aconfig", "ckey", "cvalue");
 		config.addConfiguration(dbConfig);
 	}
 	
