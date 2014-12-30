@@ -41,6 +41,14 @@ public class Config {
 		return config.getString(key);
 	}
 	
+	public static String getString(String key, String defaultValue){
+		String value = config.getString(key);
+		if(null == value){
+			return defaultValue;
+		}
+		return value;
+	}
+	
 	public static int getInt(String key){
 		return config.getInt(key);
 	}
