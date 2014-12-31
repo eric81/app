@@ -40,7 +40,7 @@
 		<!-- session过期时间   跟sso保持一致，一个小时 -->
 		<property name="globalSessionTimeout" value="3600000"></property>
 		<!-- 此处使用自定义的sessiondao -->
-		<property name="sessionDAO" ref="ehcacheSessionDAO" />
+		<property name="sessionDAO" ref="redisSessionDAO" />
 		<property name="sessionIdCookie" ref="sessionCookie" />
 		
 		<!--禁用定时清理session功能-->
