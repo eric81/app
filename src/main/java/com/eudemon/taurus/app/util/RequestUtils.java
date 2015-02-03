@@ -25,7 +25,9 @@ public class RequestUtils {
 			try {
 				return Integer.parseInt(value);
 			} catch (NumberFormatException e) {
-				Log.getErrorLogger().warn("getParameterAsInt NumberFormatException, " + e.getMessage() + ", uri:" + request.getRequestURI());
+				Log.getErrorLogger().warn(
+						"getParameterAsInt NumberFormatException, " + e.getMessage() + ", uri:"
+								+ request.getRequestURI());
 			}
 		}
 
@@ -78,6 +80,27 @@ public class RequestUtils {
 	public static String getAttributeAsTrimStr(HttpServletRequest req, String attrName, String defValue) {
 		Object obj = req.getAttribute(attrName);
 		return (obj instanceof String) ? ((String) obj).trim() : defValue;
+	}
+
+	
+	public static String getClientIp(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+			ip = request.getHeader("Proxy-Client-IP");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+			ip = request.getRemoteAddr();
+		return ip;
+	}
+
+	public static String getRealClientIp(HttpServletRequest request) {
+		String ip = request.getHeader("X-Forwarded-For");
+		if (ip == null || ip.length() == 0)
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		if (ip == null || ip.length() == 0)
+			ip = request.getRemoteAddr();
+		return ip;
 	}
 
 	/**

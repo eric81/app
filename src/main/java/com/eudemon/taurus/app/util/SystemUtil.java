@@ -86,8 +86,7 @@ public class SystemUtil {
 
 		return false;
 	}
-
-	//如果不能满足要求，请留言并说明情况
+	
 	public static void main(String[] args) {
 		String serverIP = SystemUtil.getLocalIP();
 		System.out.println("serverIP:" + serverIP);

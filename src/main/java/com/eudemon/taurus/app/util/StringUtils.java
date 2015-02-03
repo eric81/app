@@ -1,5 +1,8 @@
 package com.eudemon.taurus.app.util;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.eudemon.taurus.app.common.Log;
 
 public class StringUtils {
@@ -33,6 +36,9 @@ public class StringUtils {
 	
 	public static int toInt(String value, int defaultValue){
 		int n = defaultValue;
+		if(null == value || value.equals("")){
+			return n;
+		}
 		try {
 			n = Integer.parseInt(value);
 		} catch (NumberFormatException e) {
@@ -42,7 +48,19 @@ public class StringUtils {
 		return n;
 	}
 	
+	public static int[] toIntArray(String value, String spliter, int defaultValue){
+		String[] strAy = value.split(spliter);
+		int[] intAy = null;
+		for(String str : strAy){
+			intAy = ArrayUtils.add(intAy, toInt(str, defaultValue));
+		}
+		
+		return intAy;
+	}
+	
 	public static void main(String[] args){
 		System.out.println(StringUtils.toString(new String[]{"1", "2"}, ","));
+		
+		System.out.println(ToStringBuilder.reflectionToString(StringUtils.toIntArray("1,2", ",", 0)));
 	}
 }
