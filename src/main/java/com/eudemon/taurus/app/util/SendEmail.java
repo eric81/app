@@ -13,18 +13,18 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 
 /**
- * ¸ø 126 ÓÊÏä ·¢ĞÅ
+ * ç»™ 126 é‚®ç®± å‘ä¿¡
  */
 public class SendEmail {
 	private static Logger logger = Logger.getLogger(SendEmail.class);
 	
-    private boolean auth = true;// ±íÊ¾ ÊÇ·ñĞèÒªÑéÖ¤
-    private String from;// Ë­·¢£¿
-    private String to;// ·¢¸øË­£¿
-    private String username;// ·¢¼şÏäÓÃ»§Ãû
-    private String password;// ·¢¼şÏäÃÜÂë
-    private String title;// ±êÌâ
-    private String content;// ÄÚÈİ
+    private boolean auth = true;// è¡¨ç¤º æ˜¯å¦éœ€è¦éªŒè¯
+    private String from;// è°å‘ï¼Ÿ
+    private String to;// å‘ç»™è°ï¼Ÿ
+    private String username;// å‘ä»¶ç®±ç”¨æˆ·å
+    private String password;// å‘ä»¶ç®±å¯†ç 
+    private String title;// æ ‡é¢˜
+    private String content;// å†…å®¹
     public SendEmail(String from, String to, String username, String password,
                     String title, String content) {
         this.from = from;
@@ -38,33 +38,33 @@ public class SendEmail {
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "202.123.98.13");
         Session session = null;
-        // ÉèÖÃÊÇ·ñĞèÒªÑéÖ¤ 126 ÓÊÏäĞèÒªÑéÖ¤ auth ÉèÖÃÄ¬ÈÏÉèÎªtrue
+        // è®¾ç½®æ˜¯å¦éœ€è¦éªŒè¯ 126 é‚®ç®±éœ€è¦éªŒè¯ auth è®¾ç½®é»˜è®¤è®¾ä¸ºtrue
         if (auth) {
             props.put("mail.smtp.auth", "true");
-            // ÀûÓÃ Authenticator Í¨¹ıÓÃ»§ÃûºÍÃÜÂë·ÃÎÊÊÜ±£»¤µÄ×ÊÔ´
+            // åˆ©ç”¨ Authenticator é€šè¿‡ç”¨æˆ·åå’Œå¯†ç è®¿é—®å—ä¿æŠ¤çš„èµ„æº
             Authenticator author = new MyAuthenticator(username, password);
             session = Session.getDefaultInstance(props, author);
         } else {
             props.put("mail.smtp.auth", "false");
-            // null±íÊ¾ÑéÖ¤
+            // nullè¡¨ç¤ºéªŒè¯
             session = Session.getDefaultInstance(props, null);
         }
-        // ÉèÖÃÔÚ¿Í»§¶Ë ÏÔÊ¾ ·şÎñÆ÷ĞÅÏ¢
+        // è®¾ç½®åœ¨å®¢æˆ·ç«¯ æ˜¾ç¤º æœåŠ¡å™¨ä¿¡æ¯
         session.setDebug(true);
-        // °ó¶¨message
+        // ç»‘å®šmessage
         Message message = new MimeMessage(session);
         try {
             message.setFrom(new InternetAddress(from));
-            // ·¢ÄÄÈ¥£¿
+            // å‘å“ªå»ï¼Ÿ
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(
                     to));
             message.setSubject(title);
             message.setText(content);
-            // ÓÃÀ´·¢ËÍ
+            // ç”¨æ¥å‘é€
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
-            logger.error("send mail exception :¡¡" + e.getMessage(), e);
+            logger.error("send mail exception :ã€€" + e.getMessage(), e);
         }
         props.remove("proxySet");
         props.remove("ProxyHost");
@@ -107,10 +107,10 @@ public class SendEmail {
     }
 
     public static void main(String[] args) {
-//        SendEmail se = new SendEmail("wangqi@xinhua.cn", "7969660@qq.com", "wangqi@xinhua.cn", "xhnwq","²âÊÔ", "²âÊÔ");
-//        SendEmail se = new SendEmail("norepl@home.news.cn", "7969660@qq.com", "norepl", "xinhua123","²âÊÔ", "²âÊÔ");
-        SendEmail se = new SendEmail("noreply@home.news.cn", "wangqi@xinhua.cn", "noreply@home.news.cn", "66242229kwm","²âÊÔ", "²âÊÔ");
+//        SendEmail se = new SendEmail("wangqi@xinhua.cn", "7969660@qq.com", "wangqi@xinhua.cn", "xhnwq","æµ‹è¯•", "æµ‹è¯•");
+//        SendEmail se = new SendEmail("norepl@home.news.cn", "7969660@qq.com", "norepl", "xinhua123","æµ‹è¯•", "æµ‹è¯•");
+        SendEmail se = new SendEmail("noreply@home.news.cn", "wangqi@xinhua.cn", "noreply@home.news.cn", "66242229kwm","æµ‹è¯•", "æµ‹è¯•");
         se.send();
-        System.out.println("·¢ËÍÍê±Ï");
+        System.out.println("å‘é€å®Œæ¯•");
     }
 }
