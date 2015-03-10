@@ -30,26 +30,27 @@ public class RedisSessionDao extends AbstractSessionDAO {
 	private String keyPrefix = "shiro_redis_session:";
 	
 	@Override
-	public void update(Session session) throws UnknownSessionException {
-		this.saveSession(session);
+	protected Serializable doCreate(Session session) {
+		Serializable sessionId = this.generateSessionId(session);  
+        this.assignSessionId(session, sessionId);
+        this.saveSession(session);
+		return sessionId;
 	}
-	
-	/**
-	 * save session
-	 * @param session
-	 * @throws UnknownSessionException
-	 */
-	private void saveSession(Session session) throws UnknownSessionException{
-		if(session == null || session.getId() == null){
-			logger.error("session or session id is null");
-			return;
+
+	@Override
+	protected Session doReadSession(Serializable sessionId) {
+		if(sessionId == null){
+			logger.error("session id is null");
+			return null;
 		}
 		
-		byte[] key = getByteKey(session.getId());
-		byte[] value = SerializeUtils.serialize(session);
-		session.setTimeout(timeout);		
-		redis.set(key, value);
-		redis.expire(key, timeout);
+		Session s = (Session)SerializeUtils.deserialize(redis.get(this.getByteKey(sessionId)));
+		return s;
+	}
+	
+	@Override
+	public void update(Session session) throws UnknownSessionException {
+		this.saveSession(session);
 	}
 
 	@Override
@@ -76,24 +77,23 @@ public class RedisSessionDao extends AbstractSessionDAO {
 		
 		return sessions;
 	}
-
-	@Override
-	protected Serializable doCreate(Session session) {
-		Serializable sessionId = this.generateSessionId(session);  
-        this.assignSessionId(session, sessionId);
-        this.saveSession(session);
-		return sessionId;
-	}
-
-	@Override
-	protected Session doReadSession(Serializable sessionId) {
-		if(sessionId == null){
-			logger.error("session id is null");
-			return null;
+	
+	/**
+	 * save session
+	 * @param session
+	 * @throws UnknownSessionException
+	 */
+	private void saveSession(Session session) throws UnknownSessionException{
+		if(session == null || session.getId() == null){
+			logger.error("session or session id is null");
+			return;
 		}
 		
-		Session s = (Session)SerializeUtils.deserialize(redis.get(this.getByteKey(sessionId)));
-		return s;
+		byte[] key = getByteKey(session.getId());
+		byte[] value = SerializeUtils.serialize(session);
+		session.setTimeout(timeout);		
+		redis.set(key, value);
+		redis.expire(key, timeout);
 	}
 	
 	/**

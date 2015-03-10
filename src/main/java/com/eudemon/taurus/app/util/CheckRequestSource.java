@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.eudemon.taurus.app.common.Config;
 
 /**
- * ¼ì²âÇëÇóÊÇ·ñÀ´×ÔÊÖ»ú
+ * æ£€æµ‹è¯·æ±‚æ˜¯å¦æ¥è‡ªæ‰‹æœº
  *
  */
 public class CheckRequestSource {
@@ -15,7 +15,7 @@ public class CheckRequestSource {
 	public static boolean isFromPhone(HttpServletRequest request) {
 		String userAgent = request.getHeader("User-Agent");
 		
-		//ÏÈ¼ì²âÊÇ·ñÃüÖĞÒªÅÅ³ıµÄÑ¡Ïî£¬ÓĞÃüÖĞÔò·µ»Øfalse
+		//å…ˆæ£€æµ‹æ˜¯å¦å‘½ä¸­è¦æ’é™¤çš„é€‰é¡¹ï¼Œæœ‰å‘½ä¸­åˆ™è¿”å›false
 		String excludeString = Config.getString("exclude-mobile-devices", "");
 		if(!"".equals(excludeString)){
 			String[] excludeDevice = excludeString.split(";");
