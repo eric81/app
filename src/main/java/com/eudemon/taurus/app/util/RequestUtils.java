@@ -27,9 +27,8 @@ public class RequestUtils {
 			try {
 				return Integer.parseInt(value);
 			} catch (NumberFormatException e) {
-				Log.getErrorLogger().warn(
-						"getParameterAsInt NumberFormatException, " + e.getMessage() + ", uri:"
-								+ request.getRequestURI());
+				Log.getErrorLogger().warn("getParameterAsInt NumberFormatException, "
+						+ e.getMessage() + ", uri:" + request.getRequestURI());
 			}
 		}
 
@@ -46,15 +45,6 @@ public class RequestUtils {
 			return Boolean.parseBoolean(temp);
 		}
 		return defaultValue;
-	}
-
-	/**
-	 * @deprecated Method getParameterAsGBK is deprecated
-	 */
-
-	public static String getParameterAsGBK(HttpServletRequest req, String param) {
-		String result = req.getParameter(param);
-		return result != null ? result.trim() : "";
 	}
 
 	public static String getParameterAndTrim(HttpServletRequest req, String param) {
