@@ -1,4 +1,4 @@
-package com.eudemon.taurus.app.http;
+package com.eudemon.taurus.app.http.use;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 import com.eudemon.taurus.app.AppStartServer;
 import com.eudemon.taurus.app.common.Log;
+import com.eudemon.taurus.app.http.HttpClient;
 
 public class Hospital {
 

@@ -1,10 +1,9 @@
 package com.eudemon.taurus.app.http;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.eudemon.taurus.app.json.JsonMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 public class IPAddress {
 	
@@ -19,12 +18,12 @@ public class IPAddress {
 			e.printStackTrace();
 		}
 		
-		JsonMapper jmp =JsonMapper.nonDefaultMapper();
-		Map<String, Object> map = jmp.fromJson(rs, HashMap.class);
-		
-		if(null != map && map.get("code") != null && (Integer)map.get("code") == 0){
-			Map<String, Object> dataMap = (Map<String, Object>) map.get("data");
-			region = (String) dataMap.get("region");
+		JSONObject jsObj = JSON.parseObject(rs);
+		if(null != jsObj){
+			JSONObject dataJs = jsObj.getJSONObject("data");
+			if(null != dataJs){
+				region = dataJs.getString("region");
+			}
 		}
 		
 		return region;

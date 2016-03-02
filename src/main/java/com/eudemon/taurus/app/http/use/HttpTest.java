@@ -1,6 +1,8 @@
-package com.eudemon.taurus.app.http;
+package com.eudemon.taurus.app.http.use;
 
 import java.io.IOException;
+
+import com.eudemon.taurus.app.http.HttpClient;
 
 public class HttpTest {
 
